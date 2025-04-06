@@ -1,0 +1,52 @@
+# Citizen Registration System Requirements
+
+# Django and REST framework
+Django==4.2.7
+djangorestframework==3.14.0
+django-cors-headers==4.3.0
+django-filter==23.3
+djangorestframework-simplejwt==5.3.0
+
+# Database
+psycopg2-binary==2.9.9
+dj-database-url==2.1.0
+
+# Image processing and PDF generation
+Pillow==10.1.0
+reportlab==4.0.7
+qrcode==7.4.2
+WeasyPrint==60.1
+
+# Data processing and visualization
+numpy==1.26.1
+pandas==2.1.2
+matplotlib==3.8.1
+seaborn==0.13.0
+
+# Background tasks
+celery==5.3.4
+redis==5.0.1
+django-celery-beat==2.5.0
+
+# Testing
+pytest==7.4.3
+pytest-django==4.7.0
+coverage==7.3.2
+
+# Security
+django-debug-toolbar==4.2.0
+django-csp==3.7
+django-axes==6.1.1
+
+# Utilities
+python-dotenv==1.0.0
+gunicorn==21.2.0
+whitenoise==6.6.0
+django-storages==1.14.2
+
+# Monitoring
+sentry-sdk==1.32.0
+django-prometheus==2.3.1
+
+# Documentation
+drf-yasg==1.21.7
