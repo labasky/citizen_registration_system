@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citizen Registration System - Search</title>
+    <style>
+        :root {
+            --primary-color: #006400;
+            --secondary-color: #FFFFFF;
+            --accent-color: #008000;
+            --background-color: #F5F5F5;
+            --text-color: #333333;
+            --border-color: #DDDDDD;
+            --sidebar-width: 250px;
+            --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            padding: 20px 0;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo-container {
+            text-align: center;
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            width: 60px;
+        }
+        
+        .system-name {
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        
+        .nav-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-item:hover {
+            background-color: var(--accent-color);
+        }
+        
+        .nav-item.active {
+            background-color: var(--accent-color);
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        .nav-icon {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-info {
+            margin-right: 15px;
+            text-align: right;
+        }
+        
+        .user-name {
+            font-weight: bold;
+        }
+        
+        .user-role {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+        
+        .search-container {
+            background-color: var(--secondary-color);
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .search-title {
+            font-size: 18px;
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .search-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: flex-end;
+        }
+        
+        .search-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .search-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        
+        .search-select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: var(--secondary-color);
+        }
+        
+        .search-button {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            height: 42px;
+        }
+        
+        .search-button:hover {
+            background-color: var(--accent-color);
+        }
+        
+        .advanced-search-link {
+            display: block;
+            margin-top: 15px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .advanced-search-link:hover {
+            text-decoration: underline;
+        }
+        
+        .results-container {
+            background-color: var(--secondary-color);
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            padding: 20px;
+        }
+        
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .results-title {
+            font-size: 18px;
+            color: var(--primary-color);
+            margin: 0;
+        }
+        
+        .results-count {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .results-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .action-button {
+            background-color: #f0f0f0;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 8px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+        
+        .action-button:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .action-icon {
+            margin-right: 5px;
+        }
+        
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .results-table th {
+            background-color: #f5f5f5;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .results-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .results-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .citizen-id {
+            font-family: monospace;
+            font-weight: 600;
+        }
+        
+        .citizen-name {
+            font-weight: 500;
+        }
+        
+        .action-cell {
+            white-space: nowrap;
+        }
+        
+        .table-action {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+        
+        .table-action:hover {
+            text-decoration: underline;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        
+        .pagination-info {
+            color: #666;
+        }
+        
+        .pagination-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .pagination-button {
+            background-color: #f0f0f0;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .pagination-button:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .pagination-button.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .pagination-current {
+            font-weight: bold;
+        }
+        
+        .advanced-search {
+            background-color: var(--secondary-color);
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            padding: 20px;
+            margin-bottom: 30px;
+            display: none;
+        }
+        
+        .advanced-search.show {
+            display: block;
+        }
+        
+        .advanced-search-title {
+            font-size: 18px;
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .close-advanced {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--accent-color);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                padding: 10px 0;
+            }
+            
+            .nav-item {
+                padding: 10px 15px;
+            }
+            
+            .main-content {
+                padding: 15px;
+            }
+            
+            .search-form {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .search-group {
+                width: 100%;
+            }
+            
+            .results-actions {
+                flex-wrap: wrap;
+            }
+            
+            .results-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <div class="logo-container">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHBhdGggZmlsbD0iI0ZGRkZGRiIgZD0iTTUwIDVDMjUuMTQ3IDUgNSAyNS4xNDcgNSA1MHMyMC4xNDcgNDUgNDUgNDUgNDUtMjAuMTQ3IDQ1LTQ1Uzc0Ljg1MyA1IDUwIDV6bTAgODJjLTIwLjQzNSAwLTM3LTE2LjU2NS0zNy0zN1MyOS41NjUgMTMgNTAgMTNzMzcgMTYuNTY1IDM3IDM3LTE2LjU2NSAzNy0zNyAzN3oiLz48cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJNNTAgMjVjLTEzLjgwNyAwLTI1IDExLjE5My0yNSAyNXMxMS4xOTMgMjUgMjUgMjUgMjUtMTEuMTkzIDI1LTI1LTExLjE5My0yNS0yNS0yNXptMCA0MmMtOS4zODkgMC0xNy03LjYxMS0xNy0xN3M3LjYxMS0xNyAxNy0xNyAxNyA3LjYxMSAxNyAxNy03LjYxMSAxNy0xNyAxN3oiLz48cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJNNjMgNDVINTB2LTEzYzAtMS4xMDQtLjg5Ni0yLTItMnMtMiAuODk2LTIgMnYxNWMwIDEuMTA0Ljg5NiAyIDIgMmgxNWMxLjEwNCAwIDItLjg5NiAyLTJzLS44OTYtMi0yLTJ6Ii8+PC9zdmc+" alt="Logo" class="logo">
+                <div class="system-name">Citizen Registration System</div>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <span class="nav-icon">🏠</span> Dashboard
+                </li>
+                <li class="nav-item">
+                    <span class="nav-icon">👥</span> Citizen Registration
+                </li>
+                <li class="nav-item active">
+                    <span class="nav-icon">🔍</span> Search Citizens
+                </li>
+                <li class="nav-item">
+                    <span class="nav-icon">🖨️</span> ID Card Generation
+                </li>
+                <li class="nav-item">
+                    <span class="nav-icon">📊</span> Reports & Analytics
+                </li>
+                <li class="nav-item">
+                    <span class="nav-icon">⚙️</span> Administration
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <h1 class="page-title">Citizen Search</h1>
+                <div class="user-menu">
+                    <div class="user-info">
+                        <div class="user-name">John Admin</div>
+                        <div class="user-role">LGA Administrator</div>
+                    </div>
+                    <div class="user-avatar">JA</div>
+                </div>
+            </div>
+            
+            <!-- Basic Search -->
+            <div class="search-container">
+                <h2 class="search-title">Search Criteria</h2>
+                
+                <form class="search-form">
+                    <div class="search-group">
+                        <label class="search-label">Search by</label>
+                        <select class="search-select" id="search-type">
+                            <option value="id">ID Number</option>
+                            <option value="name" selected>Name</option>
+                            <option value="phone">Phone Number</option>
+                        </select>
+                    </div>
+                    
+                    <div class="search-group">
+                        <label class="search-label">Search term</label>
+                        <input type="text" class="search-input" id="search-term" placeholder="Enter search term...">
+                    </div>
+                    
+                    <button type="submit" class="search-button">Search</button>
+                </form>
+                
+                <a href="#" class="advanced-search-link" id="show-advanced">Advanced Search</a>
+            </div>
+            
+            <!-- Advanced Search (Hidden by default) -->
+            <div class="advanced-search" id="advanced-search">
+                <h2 class="advanced-search-title">
+                    Advanced Search
+                    <button class="close-advanced" id="close-advanced">&times;</button>
+                </h2>
+                
+                <form>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="search-label">First Name</label>
+                            <input type="text" class="search-input" placeholder="First Name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="search-label">Last Name</label>
+                            <input type="text" class="search-input" placeholder="Last Name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="search-label">ID Number</label>
+                            <input type="text" class="search-input" placeholder="ID Number">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="search-label">Gender</label>
+                            <select class="search-select">
+                                <option value="">Any</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="search-label">Age Range</label>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="number" class="search-input" placeholder="Min" style="width: 50%;">
+                                <input type="number" class="search-input" placeholder="Max" style="width: 50%;">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="search-label">LGA</label>
+                            <select class="search-select">
+                                <option value="">Any</option>
+                                <option value="ikeja">Ikeja</option>
+                                <option value="eti-osa">Eti-Osa</option>
+                                <option value="mushin">Mushin</option>
+                                <option value="ojo">Ojo</option>
+                                <option value="kosofe">Kosofe</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="search-label">Occupation</label>
+                            <input type="text" class="search-input" placeholder="Occupation">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="search-label">Education Level</label>
+                            <select class="search-select">
+                                <option value="">Any</option>
+                                <option value="primary">Primary</option>
+                                <option value="secondary">Secondary</option>
+                                <option value="tertiary">Tertiary</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="search-label">Registration Date</label>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="date" class="search-input" style="width: 50%;">
+                                <input type="date" class="search-input" style="width: 50%;">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="reset" class="btn btn-secondary">Reset</button>
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Search Results -->
+            <div class="results-container">
+                <div class="results-header">
+                    <h2 class="results-title">Search Results</h2>
+                    <span class="results-count">125 records found</span>
+                </div>
+                
+                <div class="results-actions">
+                    <button class="action-button">
+                        <span class="action-icon">📥</span> Export
+                    </button>
+                    <button class="action-button">
+                        <span class="action-icon">🖨️</span> Print
+                    </button>
+                    <button class="action-button">
+                        <span class="action-icon">⚙️</span> Bulk Actions
+                    </button>
+                </div>
+                
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Gender</th>
+                            <th>Age</th>
+                            <th>LGA</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="citizen-id">NG-LA-IK-25-123456-7</td>
+                            <td class="citizen-name">John Adebayo Doe</td>
+                            <td>Male</td>
+                            <td>40</td>
+                            <td>Ikeja</td>
+                            <td class="action-cell">
+                                <button class="table-action">View</button>
+                                <button class="table-action">Edit</button>
+                                <button class="table-action">Print ID</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="citizen-id">NG-LA-ET-25-234567-8</td>
+                            <td class="citizen-name">Jane Oluwaseun Smith</td>
+                            <td>Female</td>
+                            <td>35</td>
+                            <td>Eti-Osa</td>
+                            <td class="action-cell">
+                                <button class="table-action">View</button>
+                                <button class="table-action">Edit</button>
+                                <button class="table-action">Print ID</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="citizen-id">NG-LA-IK-25-345678-9</td>
+                            <td class="citizen-name">James Oluwafemi Johnson</td>
+                            <td>Male</td>
+                            <td>28</td>
+                            <td>Ikeja</td>
+                            <td class="action-cell">
+                                <button class="table-action">View</button>
+                                <button class="table-action">Edit</button>
+                                <button class="table-action">Print ID</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="citizen-id">NG-LA-OJ-25-456789-0</td>
+                            <td class="citizen-name">Mary Chioma Williams</td>
+                            <td>Female</td>
+                            <td>45</td>
+                            <td>Ojo</td>
+                            <td class="action-cell">
+                                <button class="table-action">View</button>
+                                <button class="table-action">Edit</button>
+                                <button class="table-action">Print ID</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="citizen-id">NG-LA-ET-25-567890-1</td>
+                            <td class="citizen-name">Robert Chinedu Brown</td>
+                            <td>Male</td>
+                            <td>52</td>
+                            <td>Eti-Osa</td>
+                            <td class="action-cell">
+                                <button class="table-action">View</button>
+                                <button class="table-action">Edit</button>
+                                <button class="table-action">Print ID</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="pagination">
+                    <div class="pagination-info">
+                        Showing 1-5 of 125 records
+                    </div>
+                    <div class="pagination-controls">
+                        <button class="pagination-button disabled">« Prev</button>
+                        <span class="pagination-current">Page 1 of 25</span>
+                        <button class="pagination-button">Next »</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle Advanced Search
+        document.getElementById('show-advanced').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('advanced-search').classList.add('show');
+        });
+        
+        document.getElementById('close-advanced').addEventListener('click', function() {
+            document.getElementById('advanced-search').classList.remove('show');
+        });
+        
+        // Form submission (prevent default for demo)
+        document.querySelector('.search-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Search would be performed here with term: ' + document.getElementById('search-term').value);
+        });
+        
+        document.querySelector('.advanced-search form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Advanced search would be performed here');
+            document.getElementById('advanced-search').classList.remove('show');
+        });
+        
+        // Table actions
+        document.querySelectorAll('.table-action').forEach(function(button) {
+            button.addEventListener('click', function() {
+                alert('Action: ' + this.textContent + ' for citizen ' + this.closest('tr').querySelector('.citizen-name').textContent);
+            });
+        });
+    </script>
+</body>
+</html>

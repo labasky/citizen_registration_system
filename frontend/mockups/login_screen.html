@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citizen Registration System - Login</title>
+    <style>
+        :root {
+            --primary-color: #006400;
+            --secondary-color: #FFFFFF;
+            --accent-color: #008000;
+            --background-color: #F5F5F5;
+            --text-color: #333333;
+        }
+        
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .login-container {
+            background-color: var(--secondary-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .logo {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-color);
+            font-size: 14px;
+        }
+        
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        
+        .password-container {
+            position: relative;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #888;
+        }
+        
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+        }
+        
+        .remember-me input {
+            margin-right: 5px;
+        }
+        
+        .forgot-password {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+        
+        .login-button {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            border: none;
+            border-radius: 4px;
+            padding: 12px;
+            width: 100%;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .login-button:hover {
+            background-color: var(--accent-color);
+        }
+        
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHBhdGggZmlsbD0iIzAwNjQwMCIgZD0iTTUwIDVDMjUuMTQ3IDUgNSAyNS4xNDcgNSA1MHMyMC4xNDcgNDUgNDUgNDUgNDUtMjAuMTQ3IDQ1LTQ1Uzc0Ljg1MyA1IDUwIDV6bTAgODJjLTIwLjQzNSAwLTM3LTE2LjU2NS0zNy0zN1MyOS41NjUgMTMgNTAgMTNzMzcgMTYuNTY1IDM3IDM3LTE2LjU2NSAzNy0zNyAzN3oiLz48cGF0aCBmaWxsPSIjMDA2NDAwIiBkPSJNNTAgMjVjLTEzLjgwNyAwLTI1IDExLjE5My0yNSAyNXMxMS4xOTMgMjUgMjUgMjUgMjUtMTEuMTkzIDI1LTI1LTExLjE5My0yNS0yNS0yNXptMCA0MmMtOS4zODkgMC0xNy03LjYxMS0xNy0xN3M3LjYxMS0xNyAxNy0xNyAxNyA3LjYxMSAxNyAxNy03LjYxMSAxNy0xNyAxN3oiLz48cGF0aCBmaWxsPSIjMDA2NDAwIiBkPSJNNjMgNDVINTB2LTEzYzAtMS4xMDQtLjg5Ni0yLTItMnMtMiAuODk2LTIgMnYxNWMwIDEuMTA0Ljg5NiAyIDIgMmgxNWMxLjEwNCAwIDItLjg5NiAyLTJzLS44OTYtMi0yLTJ6Ii8+PC9zdmc+" alt="Nigerian Coat of Arms" class="logo">
+        <h1>CITIZEN REGISTRATION SYSTEM</h1>
+        
+        <div class="input-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username">
+        </div>
+        
+        <div class="input-group">
+            <label for="password">Password</label>
+            <div class="password-container">
+                <input type="password" id="password" name="password" placeholder="Enter your password">
+                <span class="password-toggle" onclick="togglePassword()">👁️</span>
+            </div>
+        </div>
+        
+        <div class="remember-forgot">
+            <div class="remember-me">
+                <input type="checkbox" id="remember" name="remember">
+                <label for="remember">Remember me</label>
+            </div>
+            <a href="#" class="forgot-password">Forgot Password?</a>
+        </div>
+        
+        <button class="login-button">LOGIN</button>
+        
+        <div class="footer">
+            © 2025 State Government of Nigeria<br>
+            Version 1.0
+        </div>
+    </div>
+
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+            } else {
+                passwordInput.type = 'password';
+            }
+        }
+    </script>
+</body>
+</html>

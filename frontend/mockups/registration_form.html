@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citizen Registration System - Registration Form</title>
+    <style>
+        :root {
+            --primary-color: #006400;
+            --secondary-color: #FFFFFF;
+            --accent-color: #008000;
+            --background-color: #F5F5F5;
+            --text-color: #333333;
+            --border-color: #DDDDDD;
+            --sidebar-width: 250px;
+        }
+        
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            padding: 20px 0;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo-container {
+            text-align: center;
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            width: 60px;
+        }
+        
+        .system-name {
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        
+        .nav-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-item:hover {
+            background-color: var(--accent-color);
+        }
+        
+        .nav-item.active {
+            background-color: var(--accent-color);
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        .nav-icon {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-info {
+            margin-right: 15px;
+            text-align: right;
+        }
+        
+        .user-name {
+            font-weight: bold;
+        }
+        
+        .user-role {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+        
+        .registration-steps {
+            display: flex;
+            margin-bottom: 30px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+        
+        .step {
+            flex: 1;
+            text-align: center;
+            padding: 15px 10px;
+            background-color: #E0E0E0;
+            margin-right: 5px;
+            border-radius: 4px;
+            font-size: 14px;
+            min-width: 120px;
+            position: relative;
+        }
+        
+        .step:last-child {
+            margin-right: 0;
+        }
+        
+        .step.active {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+        }
+        
+        .step.completed {
+            background-color: var(--accent-color);
+            color: var(--secondary-color);
+        }
+        
+        .step::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -15px;
+            width: 0;
+            height: 0;
+            border-top: 25px solid transparent;
+            border-bottom: 25px solid transparent;
+            border-left: 15px solid #E0E0E0;
+            z-index: 1;
+        }
+        
+        .step.active::after {
+            border-left-color: var(--primary-color);
+        }
+        
+        .step.completed::after {
+            border-left-color: var(--accent-color);
+        }
+        
+        .step:last-child::after {
+            display: none;
+        }
+        
+        .form-container {
+            background-color: var(--secondary-color);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        
+        .form-title {
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .form-row {
+            display: flex;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .form-group {
+            flex: 1;
+            min-width: 250px;
+            margin-right: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .form-group:last-child {
+            margin-right: 0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .required::after {
+            content: '*';
+            color: #e53935;
+            margin-left: 4px;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="date"],
+        input[type="tel"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+        }
+        
+        .radio-option input {
+            margin-right: 8px;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .photo-upload {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+        
+        .photo-preview {
+            width: 150px;
+            height: 150px;
+            border: 1px dashed var(--border-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f9f9f9;
+        }
+        
+        .upload-btn {
+            background-color: #f0f0f0;
+            border: 1px solid var(--border-color);
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .upload-btn:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--accent-color);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                padding: 10px 0;
+            }
+            
+            .nav-item {
+                padding: 10px 15px;
+            }
+            
+            .main-content {
+                padding: 15px;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+            
+            .form-group {
+                flex: 100%;
+                margin-right: 0;
+            }
+            
+            .photo-upload {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <div class="logo-container">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHBhdGggZmlsbD0iI0ZGRkZGRiIgZD0iTTUwIDVDMjUuMTQ3IDUgNSAyNS4xNDcgNSA1MHMyMC4xNDcgNDUgNDUgNDUgNDUtMjAuMTQ3IDQ1LTQ1Uzc0Ljg1MyA1IDUwIDV6bTAgODJjLTIwLjQzNSAwLTM3LTE2LjU2NS0zNy0zN1MyOS41NjUgMTMgNTAgMTNzMzcgMTYuNTY1IDM3IDM3LTE2LjU2NSAzNy0zNyAzN3oiLz48cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJNNTAgMjVjLTEzLjgwNyAwLTI1IDExLjE5My0yNSAyNXMxMS4xOTMgMjUgMjUgMjUgMjUtMTEuMTkzIDI1LTI1LTExLjE5My0yNS0yNS0yNXptMCA0MmMtOS4zODkgMC0xNy03LjYxMS0xNy0xN3M3LjYxMS0xNyAxNy0xNyAxNyA3LjYxMSAxNyAxNy03LjYxMSAxNy0xNyAxN3oiLz48cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJNNjMgNDVINTB2LTEzYzAtMS4xMDQtLjg5Ni0yLTItMnMtMiAuODk2LTIgMnYxNWMwIDEuMTA0Ljg5NiAyIDIgMmgxNWMxLjEwNCAwIDItLjg5NiAyLTJzLS44OTYtMi0yLTJ6Ii8+PC9zdmc+" alt="Logo" class="logo">
+                <div class="system-name">Citizen Registration System</div>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <span class="nav-icon">🏠</span> Dashboard
+                </li>
+                <li class="nav-item active">
+                    <span class="nav-icon">👥</span> Citizen Registration
+                </li>
+                <li class="nav-item">
+                    <span class="nav-icon">🔍</span> Search Citizens
+                </li>
+                <li class="nav-item">
+                    <span class="nav-icon">🖨️</span> ID Card Generation
+                </li>
+                <li class="nav-item">
+                    <span class="nav-icon">📊</span> Reports & Analytics
+                </li>
+                <li class="nav-item">
+                    <span class="nav-icon">⚙️</span> Administration
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <h1 class="page-title">New Citizen Registration</h1>
+                <div class="user-menu">
+                    <div class="user-info">
+                        <div class="user-name">John Admin</div>
+                        <div class="user-role">LGA Administrator</div>
+                    </div>
+                    <div class="user-avatar">JA</div>
+                </div>
+            </div>
+            
+            <!-- Registration Steps -->
+            <div class="registration-steps">
+                <div class="step active">1. Personal Information</div>
+                <div class="step">2. Biometrics</div>
+                <div class="step">3. Family</div>
+                <div class="step">4. Education</div>
+                <div class="step">5. Occupation</div>
+                <div class="step">6. Health</div>
+                <div class="step">7. Sports</div>
+                <div class="step">8. Documents</div>
+                <div class="step">9. Review</div>
+            </div>
+            
+            <!-- Registration Form -->
+            <div class="form-container">
+                <h2 class="form-title">Personal Information</h2>
+                
+                <form id="personal-info-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="first-name" class="required">First Name</label>
+                            <input type="text" id="first-name" name="first-name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="middle-name">Middle Name</label>
+                            <input type="text" id="middle-name" name="middle-name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="last-name" class="required">Last Name</label>
+                            <input type="text" id="last-name" name="last-name" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="date-of-birth" class="required">Date of Birth</label>
+                            <input type="date" id="date-of-birth" name="date-of-birth" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="required">Gender</label>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" id="gender-male" name="gender" value="male" required>
+                                    <label for="gender-male">Male</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="gender-female" name="gender" value="female">
+                                    <label for="gender-female">Female</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="marital-status" class="required">Marital Status</label>
+                            <select id="marital-status" name="marital-status" required>
+                                <option value="">Select</option>
+                                <option value="single">Single</option>
+                                <option value="married">Married</option>
+                                <option value="divorced">Divorced</option>
+                                <option value="widowed">Widowed</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nationality" class="required">Nationality</label>
+                            <select id="nationality" name="nationality" required>
+                                <option value="nigerian" selected>Nigerian</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="state-of-origin" class="required">State of Origin</label>
+                            <select id="state-of-origin" name="state-of-origin" required>
+                                <option value="">Select</option>
+                                <option value="abia">Abia</option>
+                                <option value="adamawa">Adamawa</option>
+                                <option value="akwa-ibom">Akwa Ibom</option>
+                                <option value="anambra">Anambra</option>
+                                <option value="bauchi">Bauchi</option>
+                                <option value="bayelsa">Bayelsa</option>
+                                <option value="benue">Benue</option>
+                                <option value="borno">Borno</option>
+                                <option value="cross-river">Cross River</option>
+                                <option value="delta">Delta</option>
+                                <option value="ebonyi">Ebonyi</option>
+                                <option value="edo">Edo</option>
+                                <option value="ekiti">Ekiti</option>
+                                <option value="enugu">Enugu</option>
+                                <option value="fct">Federal Capital Territory</option>
+                                <option value="gombe">Gombe</option>
+                                <option value="imo">Imo</option>
+                                <option value="jigawa">Jigawa</option>
+                                <option value="kaduna">Kaduna</option>
+                                <option value="kano">Kano</option>
+                                <option value="katsina">Katsina</option>
+                                <option value="kebbi">Kebbi</option>
+                                <option value="kogi">Kogi</option>
+                                <option value="kwara">Kwara</option>
+                                <option value="lagos">Lagos</option>
+                                <option value="nasarawa">Nasarawa</option>
+                                <option value="niger">Niger</option>
+                                <option value="ogun">Ogun</option>
+                                <option value="ondo">Ondo</option>
+                                <option value="osun">Osun</option>
+                                <option value="oyo">Oyo</option>
+                                <option value="plateau">Plateau</option>
+                                <option value="rivers">Rivers</option>
+                                <option value="sokoto">Sokoto</option>
+                                <option value="taraba">Taraba</option>
+                                <option value="yobe">Yobe</option>
+                                <option value="zamfara">Zamfara</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="lga-of-origin" class="required">LGA of Origin</label>
+                            <select id="lga-of-origin" name="lga-of-origin" required>
+                                <option value="">Select State First</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="residence-address" class="required">Residence Address</label>
+                            <textarea id="residence-address" name="residence-address" required></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone" class="required">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="religion">Religion</label>
+                            <select id="religion" name="religion">
+                                <option value="">Select</option>
+                                <option value="christianity">Christianity</option>
+                                <option value="islam">Islam</option>
+                                <option value="traditional">Traditional</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ethnicity">Ethnicity</label>
+                            <select id="ethnicity" name="ethnicity">
+                                <option value="">Select</option>
+                                <option value="yoruba">Yoruba</option>
+                                <option value="igbo">Igbo</option>
+                                <option value="hausa">Hausa</option>
+                                <option value="fulani">Fulani</option>
+                                <option value="ijaw">Ijaw</option>
+                                <option value="kanuri">Kanuri</option>
+                                <option value="ibibio">Ibibio</option>
+                                <option value="tiv">Tiv</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="photo" class="required">Photo Upload</label>
+                            <div class="photo-upload">
+                                <div class="photo-preview">
+                                    No photo selected
+                                </div>
+                                <div>
+                                    <input type="file" id="photo" name="photo" accept="image/*" style="display: none;" required>
+                                    <button type="button" class="upload-btn" onclick="document.getElementById('photo').click()">Choose File</button>
+                                    <p>Passport-sized photo with white background.<br>Maximum size: 2MB</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary">Save Draft</button>
+                        <button type="submit" class="btn btn-primary">Next</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple script to show selected photo
+        document.getElementById('photo').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const photoPreview = document.querySelector('.photo-preview');
+                    photoPreview.innerHTML = `<img src="${event.target.result}" alt="Selected photo" style="max-width: 100%; max-height: 100%;">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Form submission (prevent default for demo)
+        document.getElementById('personal-info-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Form would be submitted here. Moving to next step: Biometrics');
+        });
+    </script>
+</body>
+</html>

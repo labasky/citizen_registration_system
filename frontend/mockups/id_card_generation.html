@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citizen Registration System - ID Card Generation</title>
+    <style>
+        :root {
+            --primary-color: #006400;
+            --secondary-color: #FFFFFF;
+            --accent-color: #008000;
+            --background-color: #F5F5F5;
+            --text-color: #333333;
+            --border-color: #DDDDDD;
+            --sidebar-width: 250px;
+            --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            padding: 20px 0;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo-container {
+            text-align: center;
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            width: 60px;
+        }
+        
+        .system-name {
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        
+        .nav-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-item:hover {
+            background-color: var(--accent-color);
+        }
+        
+        .nav-item.active {
+            background-color: var(--accent-color);
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        .nav-icon {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-info {
+            margin-right: 15px;
+            text-align: right;
+        }
+        
+        .user-name {
+            font-weight: bold;
+        }
+        
+        .user-role {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+        
+        .id-card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .citizen-info {
+            flex: 1;
+            min-width: 300px;
+            background-color: var(--secondary-color);
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            padding: 20px;
+        }
+        
+        .info-title {
+            font-size: 18px;
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .info-row {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .info-label {
+            width: 120px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .info-value {
+            flex: 1;
+        }
+        
+        .citizen-photo {
+            width: 150px;
+            height: 150px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            object-fit: cover;
+        }
+        
+        .card-preview {
+            flex: 1;
+            min-width: 350px;
+            background-color: var(--secondary-color);
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            padding: 20px;
+        }
+        
+        .preview-title {
+            font-size: 18px;
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .id-card {
+            width: 100%;
+            max-width: 400px;
+            height: 250px;
+            margin: 0 auto 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .card-logo {
+            width: 40px;
+            height: 40px;
+            margin-right: 15px;
+        }
+        
+        .card-title {
+            flex: 1;
+        }
+        
+        .card-country {
+            font-weight: bold;
+            font-size: 16px;
+            margin: 0;
+            color: var(--primary-color);
+        }
+        
+        .card-type {
+            font-size: 12px;
+            margin: 0;
+            color: #555;
+        }
+        
+        .card-content {
+            display: flex;
+        }
+        
+        .card-photo {
+            width: 100px;
+            height: 120px;
+            border: 1px solid #ddd;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+        
+        .card-details {
+            flex: 1;
+            font-size: 12px;
+        }
+        
+        .card-detail-row {
+            margin-bottom: 8px;
+        }
+        
+        .card-label {
+            font-weight: 600;
+            color: #555;
+            margin-right: 5px;
+        }
+        
+        .card-value {
+            font-weight: normal;
+        }
+        
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 10px;
+        }
+        
+        .card-dates {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card-signature {
+            width: 80px;
+            height: 30px;
+            border-bottom: 1px solid #555;
+            margin-top: auto;
+            font-size: 8px;
+            text-align: center;
+        }
+        
+        .card-qr {
+            width: 50px;
+            height: 50px;
+            background-color: #f0f0f0;
+            margin-left: auto;
+        }
+        
+        .card-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.05;
+            width: 200px;
+            height: 200px;
+            pointer-events: none;
+        }
+        
+        .print-options {
+            background-color: var(--secondary-color);
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .options-title {
+            font-size: 18px;
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .options-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .option-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .option-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .option-select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: var(--secondary-color);
+        }
+        
+        .option-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--accent-color);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                padding: 10px 0;
+            }
+            
+            .nav-item {
+                padding: 10px 15px;
+            }
+            
+            .main-content {
+                padding: 15px;
+            }
+            
+            .id-card-container {
+                flex-direction: column;
+            }
+            
+            .id-card {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <div class="logo-container">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHBhdGggZmlsbD0iI0ZGRkZGRiIgZD0iTTUwIDVDMjUuMTQ3IDUgNSAyNS4xNDcgNSA1MHMyMC4xNDcgNDUgNDUgNDUgNDUtMjAuMTQ3IDQ1LTQ1Uzc0Ljg1MyA1IDUwIDV6bTAgODJjLTIwLjQzNSAwLTM3LTE2LjU2NS0zNy0zN1MyOS41NjUgMTMgNTAgMTNzMzcgMTYuNTY1IDM3IDM3LTE2LjU2NSAzNy0zNyAzN3oiLz48cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJNNTAgMjVjLTEzLjgwNyAwLTI1IDExLjE5My0yNSAyNXMxMS4xOTMgMjUgMjUgMjUgMjUtMTEuMTkzIDI1LTI1LTExLjE5My0yNS0yNS0yNXptMCA0MmMtOS4zODkgMC0xNy03LjYxMS0xNy0xN3M3LjYxMS0xNyAxNy0xNyAxNyA3LjYxMSAxNyAxNy03LjYxMSAxNy0xNyAxN3oiLz48cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJNNjMgNDVINTB2LTEzYzAtMS4xMDQtLjg5Ni0yLTItMnMtMiAuODk2LTIgMnYxNWMwIDEuMTA0Ljg5NiAyIDIgMmgxNWMxLjEwNCAwIDItLjg5NiAyLTJzLS44OTYtMi0yLTJ6Ii8+PC9zdmc+" alt="Logo" class="logo">
+                <div class="system-name">Citizen Registration System</div>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <span class="nav-icon">🏠</span> Dashboard
+                </li>
+                <li class="nav-item">
+                    <span class="nav-icon">👥</span> Citizen Registration
+                </li>
+                <li class="nav-item">
+                    <span class="nav-icon">🔍</span> Search Citizens
+                </li>
+                <li class="nav-item active">
+                    <span class="nav-icon">🖨️</span> ID Card Generation
+                </li>
+                <li class="nav-item">
+                    <span class="nav-icon">📊</span> Reports & Analytics
+                </li>
+                <li class="nav-item">
+                    <span class="nav-icon">⚙️</span> Administration
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <h1 class="page-title">ID Card Generation</h1>
+                <div class="user-menu">
+                    <div class="user-info">
+                        <div class="user-name">John Admin</div>
+                        <div class="user-role">LGA Administrator</div>
+                    </div>
+                    <div class="user-avatar">JA</div>
+                </div>
+            </div>
+            
+            <!-- ID Card Generation Content -->
+            <div class="id-card-container">
+                <!-- Citizen Information -->
+                <div class="citizen-info">
+                    <h2 class="info-title">Citizen Information</h2>
+                    
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNTAiIGhlaWdodD0iMTUwIiB2aWV3Qm94PSIwIDAgMTUwIDE1MCI+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjE1MCIgaGVpZ2h0PSIxNTAiIGZpbGw9IiNmMGYwZjAiLz48Y2lyY2xlIGN4PSI3NSIgY3k9IjUwIiByPSIzMCIgZmlsbD0iI2RkZCIvPjxjaXJjbGUgY3g9Ijc1IiBjeT0iMTYwIiByPSI4MCIgZmlsbD0iI2RkZCIvPjwvc3ZnPg==" alt="Citizen Photo" class="citizen-photo">
+                    
+                    <div class="info-row">
+                        <div class="info-label">ID:</div>
+                        <div class="info-value">NG-LA-IK-25-123456-7</div>
+                    </div>
+                    
+                    <div class="info-row">
+                        <div class="info-label">Name:</div>
+                        <div class="info-value">John Adebayo Doe</div>
+                    </div>
+                    
+                    <div class="info-row">
+                        <div class="info-label">Date of Birth:</div>
+                        <div class="info-value">January 15, 1985</div>
+                    </div>
+                    
+                    <div class="info-row">
+                        <div class="info-label">Gender:</div>
+                        <div class="info-value">Male</div>
+                    </div>
+                    
+                    <div class="info-row">
+                        <div class="info-label">Address:</div>
+                        <div class="info-value">123 Main Street, Ikeja, Lagos</div>
+                    </div>
+                    
+                    <div class="info-row">
+                        <div class="info-label">LGA:</div>
+                        <div class="info-value">Ikeja</div>
+                    </div>
+                    
+                    <div class="info-row">
+                        <div class="info-label">State:</div>
+                        <div class="info-value">Lagos</div>
+                    </div>
+                </div>
+                
+                <!-- ID Card Preview -->
+                <div class="card-preview">
+                    <h2 class="preview-title">ID Card Preview</h2>
+                    
+                    <div class="id-card">
+                        <!-- Watermark -->
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+PHBhdGggZmlsbD0iIzAwMCIgZD0iTTEwMCAyMGMtNDQuMTgzIDAtODAgMzUuODE3LTgwIDgwczM1LjgxNyA4MCA4MCA4MCA4MC0zNS44MTcgODAtODAtMzUuODE3LTgwLTgwLTgwem0wIDE0NmMtMzYuMzM4IDAtNjYtMjkuNjYyLTY2LTY2czI5LjY2Mi02NiA2Ni02NiA2NiAyOS42NjIgNjYgNjYtMjkuNjYyIDY2LTY2IDY2eiIvPjxwYXRoIGZpbGw9IiMwMDAiIGQ9Ik0xMDAgNTBjLTI3LjYxNCAwLTUwIDIyLjM4Ni01MCA1MHMyMi4zODYgNTAgNTAgNTAgNTAtMjIuMzg2IDUwLTUwLTIyLjM4Ni01MC01MC01MHptMCA4NGMtMTguNzc4IDAtMzQtMTUuMjIyLTM0LTM0czE1LjIyMi0zNCAzNC0zNCAzNCAxNS4yMjIgMzQgMzQtMTUuMjIyIDM0LTM0IDM0eiIvPjxwYXRoIGZpbGw9IiMwMDAiIGQ9Ik0xMjYgOTBoLTE2VjY0YzAtMi4yMDktMS43OTEtNC00LTRzLTQgMS43OTEtNCA0djMwYzAgMi4yMDkgMS43OTEgNCA0IDRoMjBjMi4yMDkgMCA0LTEuNzkxIDQtNHMtMS43OTEtNC00LTR6Ii8+PC9zdmc+" alt="Watermark" class="card-watermark">
+                        
+                        <!-- Card Header -->
+                        <div class="card-header">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48cGF0aCBmaWxsPSIjMDA2NDAwIiBkPSJNMjAgMkM5Ljk0MSAyIDIgOS45NDEgMiAyMHM3Ljk0MSAxOCAxOCAxOCAxOC03Ljk0MSAxOC0xOFMzMC4wNTkgMiAyMCAyem0wIDMyLjhjLTguMTc0IDAtMTQuOC02LjYyNi0xNC44LTE0LjhTMTEuODI2IDUuMiAyMCA1LjJzMTQuOCA2LjYyNiAxNC44IDE0LjhTMjguMTc0IDM0LjggMjAgMzQuOHoiLz48cGF0aCBmaWxsPSIjMDA2NDAwIiBkPSJNMjAgMTBjLTUuNTIzIDAtMTAgNC40NzctMTAgMTBzNC40NzcgMTAgMTAgMTAgMTAtNC40NzcgMTAtMTAtNC40NzctMTAtMTAtMTB6bTAgMTYuOGMtMy43NTYgMC02LjgtMy4wNDQtNi44LTYuOHMzLjA0NC02LjggNi44LTYuOCA2LjggMy4wNDQgNi44IDYuOC0zLjA0NCA2LjgtNi44IDYuOHoiLz48cGF0aCBmaWxsPSIjMDA2NDAwIiBkPSJNMjUuMiAxOGgtMy4ydi01LjJjMC0uODg0LS43MTYtMS42LTEuNi0xLjZzLTEuNi43MTYtMS42IDEuNnY2LjRjMCAuODg0LjcxNiAxLjYgMS42IDEuNmg0LjhjLjg4NCAwIDEuNi0uNzE2IDEuNi0xLjZzLS43MTYtMS42LTEuNi0xLjZ6Ii8+PC9zdmc+" alt="Logo" class="card-logo">
+                            <div class="card-title">
+                                <p class="card-country">NIGERIA</p>
+                                <p class="card-type">NATIONAL CITIZEN ID</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Card Content -->
+                        <div class="card-content">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTAwIDEyMCI+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMjAiIGZpbGw9IiNmMGYwZjAiLz48Y2lyY2xlIGN4PSI1MCIgY3k9IjQwIiByPSIyNSIgZmlsbD0iI2RkZCIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iMTMwIiByPSI2MCIgZmlsbD0iI2RkZCIvPjwvc3ZnPg==" alt="Photo" class="card-photo">
+                            
+                            <div class="card-details">
+                                <div class="card-detail-row">
+                                    <span class="card-label">Name:</span>
+                                    <span class="card-value">John A. Doe</span>
+                                </div>
+                                <div class="card-detail-row">
+                                    <span class="card-label">ID#:</span>
+                                    <span class="card-value">NG-LA-IK-25-123456-7</span>
+                                </div>
+                                <div class="card-detail-row">
+                                    <span class="card-label">DOB:</span>
+                                    <span class="card-value">15-01-1985</span>
+                                </div>
+                                <div class="card-detail-row">
+                                    <span class="card-label">Sex:</span>
+                                    <span class="card-value">Male</span>
+                                </div>
+                                <div class="card-detail-row">
+                                    <span class="card-label">Address:</span>
+                                    <span class="card-value">123 Main St, Ikeja, Lagos</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Card Footer -->
+                        <div class="card-footer">
+                            <div class="card-dates">
+                                <div><span class="card-label">Issue:</span> 01-04-2025</div>
+                                <div><span class="card-label">Exp:</span> 01-04-2035</div>
+                            </div>
+                            
+                            <div class="card-signature">
+                                Signature
+                            </div>
+                            
+                            <div class="card-qr">
+                                <!-- QR Code would be here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Print Options -->
+            <div class="print-options">
+                <h2 class="options-title">Print Options</h2>
+                
+                <form class="options-form">
+                    <div class="option-group">
+                        <label class="option-label">Printer</label>
+                        <select class="option-select">
+                            <option value="default">Default Printer</option>
+                            <option value="hp">HP LaserJet Pro</option>
+                            <option value="epson">Epson ID Card Printer</option>
+                            <option value="zebra">Zebra Card Printer</option>
+                        </select>
+                    </div>
+                    
+                    <div class="option-group">
+                        <label class="option-label">Copies</label>
+                        <select class="option-select">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                    
+                    <div class="option-group">
+                        <label class="option-label">Quality</label>
+                        <select class="option-select">
+                            <option value="draft">Draft</option>
+                            <option value="normal">Normal</option>
+                            <option value="high" selected>High</option>
+                        </select>
+                    </div>
+                </form>
+                
+                <div class="form-actions">
+                    <button class="btn btn-secondary">Cancel</button>
+                    <button class="btn btn-primary">Print ID Card</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Print button action
+        document.querySelector('.btn-primary').addEventListener('click', function() {
+            alert('ID Card would be printed here');
+        });
+        
+        // Cancel button action
+        document.querySelector('.btn-secondary').addEventListener('click', function() {
+            alert('Print operation cancelled');
+        });
+    </script>
+</body>
+</html>
